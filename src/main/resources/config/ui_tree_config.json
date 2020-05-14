@@ -1,0 +1,14 @@
+{
+  "surfaceTransparency" : 0, // 1.0 -> total transparent
+  "showCircle" : false,
+  "useTexture" : false,
+  "showSkeleton" : true,
+  "showPointCloud" : false,
+  "circleColor" : {
+    "r" : 255,
+    "g" : 0,
+    "b" : 0
+  },
+  "circleWidth" : 4.0,
+  "rootRadius" : 0.18 // tree2->0.22 tree1->0.18
+}

@@ -1,0 +1,35 @@
+{
+  "skeletonNodeColor" : {
+    "r" : 255,
+    "g" : 0,
+    "b" : 0
+  },
+  "skeletonNodeSize" : 7.0,
+  "skeletonCurveWidth" : 2.0,
+  "skeletonCurveColor" : {
+    "r" : 255,
+    "g" : 0,
+    "b" : 0
+  },
+  "pointCloudColorMode" : "LEVEL", // SINGLE|LEVEL|BRANCH
+  "pointCloudSize" : 3.0,
+  "pointCloudColor" : {
+    "r" : 128,
+    "g" : 128,
+    "b" : 128
+  },
+  "guessPointColor" : {
+    "r" : 0,
+    "g" : 0,
+    "b" : 255
+  },
+  "guessPointSize" : 8.0,
+
+  "showNeighborhoodGraph" : false,
+  "showPointCloud" : true,
+  "showSkeletonCurve" : true,
+  "showGuessPoint" : false,
+  "showGeodesicGraph" : false,
+  "showLevelSetGraph" : false
+
+}

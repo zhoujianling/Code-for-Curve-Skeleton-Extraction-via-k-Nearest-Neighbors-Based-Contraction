@@ -1,0 +1,15 @@
+{
+  "type" : "FISSION", // CUSTOM | FISSION | EXTRACTING
+  "showFissionIndex" : 20,
+  "geodesicRatio" : 0.9, // 0-1
+  "l1Color" : {
+    "r" : 0,
+    "g" : 255,
+    "b" : 0
+  },
+  "l1VarColor" : {
+    "r" : 255,
+    "g" : 0,
+    "b" : 0
+  }
+}

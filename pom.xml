@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mpp</artifactId>
+    <groupId>anonymous</groupId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>ModelProcessingPlatform</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jogamp.gluegen/gluegen -->
+        <dependency>
+            <groupId>javax.vecmath</groupId>
+            <artifactId>vecmath</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/cn.jimmiez/pcutil -->
+        <dependency>
+            <groupId>cn.jimmiez</groupId>
+            <artifactId>pcutil</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jogamp.gluegen/gluegen -->
+        <dependency>
+            <groupId>javax.vecmath</groupId>
+            <artifactId>vecmath</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+        <!-- local jar library -->
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>jogl-all</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jogl-all.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>gluegen-rt</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gluegen-rt.jar</systemPath>
+        </dependency>
+        <!-- platform-dependent jars -->
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>gluegen-rt-natives-linux-amd64</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gluegen-rt-natives-linux-amd64.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>gluegen-rt-natives-macosx-universal</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gluegen-rt-natives-macosx-universal.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>gluegen-rt-natives-windows-amd64</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/gluegen-rt-natives-windows-amd64.jar</systemPath>
+        </dependency>
+
+        <!-- platform-dependent jars -->
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>jogamp-all-natives-linux-amd64</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jogl-all-natives-linux-amd64.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>jogamp-all-natives-macosx-universal</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jogl-all-natives-macosx-universal.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.jogamp</groupId>
+            <artifactId>jogamp-all-natives-windows-amd64</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jogl-all-natives-windows-amd64.jar</systemPath>
+        </dependency>
+
+        <!-- j3d core library -->
+        <dependency>
+            <groupId>javax.media.j3d</groupId>
+            <artifactId>j3dcore</artifactId>
+            <version>1.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/j3dcore.jar</systemPath>
+        </dependency>
+
+        <!-- support mouse operation -->
+        <dependency>
+            <groupId>com.sun.j3d</groupId>
+            <artifactId>j3dutils</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/j3dutils.jar</systemPath>
+        </dependency>
+
+        <!-- java machine learning, clustering -->
+        <dependency>
+            <groupId>net.sf.javaml</groupId>
+            <artifactId>j3dutils</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/javaml-0.1.7.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.20.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
