@@ -95,7 +95,7 @@ public class CanvasObjectListModel extends Observable implements TableModel {
     }
 
     /**
-     * @param canvasData 已经修改过的数据
+     * @param canvasData the canvas data that is updated
      */
     public void updateCanvasObject(Object canvasData) {
         synchronized (CanvasObjectListModel.class) {

@@ -18,3 +18,20 @@ If everything goes well, you will see:
 
 
 Click `...` button to import point cloud, then click `Run` button to start the skeletonization process. 
+
+## About
+If this project contributes to an academic publication, cite it as:
+```bibtex
+@article{zhou2020curve,
+  title={Curve Skeleton Extraction Via K-Nearest-Neighbors Based Contraction},
+  author={Zhou, Jianling and Liu, Ji and Zhang, Min},
+  journal={International Journal of Applied Mathematics and Computer Science},
+  volume={30},
+  number={1},
+  pages={123--132},
+  year={2020},
+  publisher={Sciendo}
+}
+```
+
+

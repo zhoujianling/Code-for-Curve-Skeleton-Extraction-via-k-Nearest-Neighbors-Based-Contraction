@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import static java.lang.Math.*;
 
 /**
- * 2000.MLS 那篇论文里的移动连线法
+ * 2000.MLS
  */
 @Component
 public class BuildSkeletonConnections extends CachedPipe {
@@ -331,24 +331,6 @@ public class BuildSkeletonConnections extends CachedPipe {
         return result;
     }
 
-//    @SuppressWarnings("Duplicates")
-//    private double computeRepairBridgeConfidence(SkeletonPoint esp, SkeletonPoint candidate, Vector3d espDirection) {
-//        double confidence = 1.0;
-//        if (candidate.isBridge) confidence += 0.5;
-//
-//        Point3d pp = esp.point;
-//        Point3d pj = candidate.point;
-//
-//        Vector3d ppPj = new Vector3d(pj.x - pp.x, pj.y - pp.y, pj.z - pp.z);
-//        double angleJ = ppPj.angle(espDirection);
-//        double distance = pp.distance(pj);
-//        // *= cos 使得要连接的骨架点尽可能分布在 PCA 方向上
-//        // 先乘 cos(angle)，再减倍数，因为我们优先要求这玩意落在PCA方向上
-//        confidence -= (distance / box.diagonalLength());
-//        confidence *= cos(angleJ);
-//
-//        return confidence;
-//    }
 
     /**
      * 计算 confidence:通过 PCA 方向上的投影距离进行筛选, PCA 方向上的投影距离尽可能近，

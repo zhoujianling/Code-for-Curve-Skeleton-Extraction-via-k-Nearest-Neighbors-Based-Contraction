@@ -74,8 +74,8 @@ public class IterativeContract extends CachedPipe {
     @Param(comment = "Growth Rate(a%)", key = "radiusIncreaseRate", minVal = 0, maxVal = 300)
     private Integer rate = 100;
 
-    @Param(comment = "Riemannian Neighbors", key = "enableRiemann")
-    private Boolean enableRiemann = false;
+//    @Param(comment = "Geodesic Neighbors", key = "enableRiemann")
+    private Boolean enableGeodesic = false;
 
     @Param(comment = "Iterations (c)", key = "iterationNum", minVal = 2, maxVal = 200)
     private Integer iterationNum = 12;
@@ -139,14 +139,12 @@ public class IterativeContract extends CachedPipe {
     }
 
     @Override
-    public void apply() throws FileNotFoundException {
-//        dataPoints = index2Vertex.values().stream().map(Vertex::getPosition).collect(Collectors.toList());
+    public void apply() {
         points.clear();
         neighborNumbers.clear();
         ifFrozen.clear();
         sigmas.clear();
         densities.clear();
-//        radiusTimes = 5;
         mainIterationBody();
     }
 
@@ -481,7 +479,7 @@ public class IterativeContract extends CachedPipe {
         Set<Integer> indices = new HashSet<>();
         indices.add(i);
         for (int index : candidates) indices.add(index);
-        if (enableRiemann) {
+        if (enableGeodesic) {
             BaseGraph subGraph = Graphs.subGraph(knnGraph, indices);
             List<List<Integer>> conns = Graphs.connectedComponents(subGraph);
             for (List<Integer> conn : conns) {
