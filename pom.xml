@@ -74,6 +74,12 @@
             <version>0.3.0</version>
         </dependency>
 
+        <!-- For UI form -->
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>7.0.3</version>
+        </dependency>
 
         <!-- Fix javax.annotation.Nullable cannot be resolved -->
         <dependency>
@@ -232,6 +238,7 @@
                         </descriptors>
                     </configuration>
                 </plugin>
+
 
 <!--                <plugin>-->
 <!--                    <groupId>org.codehaus.mojo</groupId>-->
