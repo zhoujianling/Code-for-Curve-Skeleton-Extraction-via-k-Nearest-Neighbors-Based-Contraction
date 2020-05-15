@@ -7,7 +7,7 @@ import cn.edu.cqu.graphics.model.PointCloud;
 import cn.edu.cqu.graphics.model.Vertex;
 import cn.edu.cqu.graphics.protocol.*;
 import cn.edu.cqu.graphics.util.OctreeUtil;
-import javafx.util.Pair;
+import cn.jimmiez.pcu.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

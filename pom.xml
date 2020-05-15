@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mpp</artifactId>
-    <groupId>anonymous</groupId>
+    <groupId>cn.edu.cqu</groupId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -74,23 +74,14 @@
             <version>0.3.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+
+        <!-- Fix javax.annotation.Nullable cannot be resolved -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jogamp.gluegen/gluegen -->
-        <dependency>
-            <groupId>javax.vecmath</groupId>
-            <artifactId>vecmath</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>kryo</artifactId>
-            <version>4.0.2</version>
-        </dependency>
+
         <!-- local jar library -->
         <dependency>
             <groupId>com.jogamp</groupId>
@@ -196,6 +187,11 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.7.0</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-Djava.ext.dirs=lib/</arg>
+                        </compilerArgs>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -204,6 +200,15 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <mainClass>cn.edu.cqu.graphics.ui.Entrance</mainClass>
+                                <classpathPrefix>libs/</classpathPrefix>
+                            </manifest>
+                        </archive>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
@@ -213,6 +218,40 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
                 </plugin>
+
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>cn.edu.cqu.graphics.ui.Entrance</mainClass>
+                            </manifest>
+                        </archive>
+                        <descriptors>
+                            <descriptor>src/assembly/package.xml</descriptor>
+                        </descriptors>
+                    </configuration>
+                </plugin>
+
+<!--                <plugin>-->
+<!--                    <groupId>org.codehaus.mojo</groupId>-->
+<!--                    <artifactId>ideauidesigner-maven-plugin</artifactId>-->
+<!--                    <version>1.0-beta-1</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <goals>-->
+<!--                                <goal>javac2</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+
+<!--                    <configuration>-->
+<!--                        <fork>true</fork>-->
+<!--                        <debug>true</debug>-->
+<!--                        <failOnError>true</failOnError>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
+
             </plugins>
         </pluginManagement>
     </build>

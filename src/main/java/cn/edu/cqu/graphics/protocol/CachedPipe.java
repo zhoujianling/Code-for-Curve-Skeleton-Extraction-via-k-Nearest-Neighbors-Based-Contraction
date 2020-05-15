@@ -5,9 +5,9 @@ import cn.edu.cqu.graphics.platform.CanvasObject;
 import cn.edu.cqu.graphics.platform.MemCachePool;
 import cn.edu.cqu.graphics.platform.PlatformGlobalManager;
 import cn.edu.cqu.graphics.util.ReflectUtil;
-import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.annotation.Annotation;

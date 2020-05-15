@@ -12,9 +12,9 @@ import cn.edu.cqu.graphics.protocol.CanvasAttr;
 import cn.jimmiez.pcu.common.graph.Graphs;
 import cn.jimmiez.pcu.common.graphics.BoundingBox;
 import cn.jimmiez.pcu.model.Skeleton;
+import cn.jimmiez.pcu.util.Pair;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Sphere;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
