@@ -20,7 +20,6 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static cn.edu.cqu.graphics.Constants.INFINITE;
 
 /**
  * Created by zjl on 2017/6/20.
@@ -159,7 +158,7 @@ public class InitialSkeletonNovel extends CachedPipe {
 
         for (int i = 0; i < index2Vertex.size(); i++) {//遍历所有结点，逐个取出加入到S集
             Vertex shortestOutsideS = null; //将 V - S 中离root点最近的点加入到 S 集中，这个距离会一直维护的
-            double shortestDistance = INFINITE;
+            double shortestDistance = Double.MAX_VALUE;
             for (Long vertexIndex : index2Vertex.keySet()) {
                 Vertex vertex = index2Vertex.get(vertexIndex);
                 if (!sSet.contains(vertexIndex) && distances.get(vertexIndex) < shortestDistance) {
@@ -211,7 +210,7 @@ public class InitialSkeletonNovel extends CachedPipe {
             Vector<Long> initPath = new Vector<>();
             if (!Objects.equals(vertex.getIndex(), root.getIndex()))
                 initPath.add(vertex.getIndex());
-            if (Math.abs(weight(root.getIndex(), vertex.getIndex()) - INFINITE) > 1e-5)
+            if (Math.abs(weight(root.getIndex(), vertex.getIndex()) - Double.MAX_VALUE) > 1e-5)
                 paths.put(vertex.getIndex(), initPath);
             else
                 paths.put(vertex.getIndex(), new Vector<>());
@@ -221,7 +220,7 @@ public class InitialSkeletonNovel extends CachedPipe {
     public Double weight(Long index1, Long index2) {
         if (index1.equals(index2)) {return 0.0;}
         HashMap<Long, Double> map = neighborMap.get(index1);
-        return map.getOrDefault(index2, INFINITE);
+        return map.getOrDefault(index2, Double.MAX_VALUE);
     }
 
     /**
@@ -239,7 +238,7 @@ public class InitialSkeletonNovel extends CachedPipe {
         int leftPointer = distanceEntrySet.size() - 1;
         int rightPointer = distanceEntrySet.size() - 1;
         for (int i = distanceEntrySet.size() - 1; i >= 0; i --) {
-            if (! distanceEntrySet.get(i).getValue().equals(INFINITE)) {
+            if (! distanceEntrySet.get(i).getValue().equals(Double.MAX_VALUE)) {
                 maxGeodesicDistance = distanceEntrySet.get(i).getValue();
                 break;
             }

@@ -3,7 +3,7 @@ package cn.edu.cqu.graphics.pipeline;
 import cn.edu.cqu.graphics.model.PointCloud;
 import cn.edu.cqu.graphics.pipes.MovingLeastSquare;
 import cn.edu.cqu.graphics.pipes.collapse.BuildSkeletonConnections;
-import cn.edu.cqu.graphics.pipes.collapse.IterativeContract;
+import cn.edu.cqu.graphics.pipes.collapse.IterativeContraction;
 import cn.edu.cqu.graphics.pipes.collapse.PointsRedistribution;
 import cn.edu.cqu.graphics.pipes.sample.WLOPResample;
 import cn.edu.cqu.graphics.protocol.AlgorithmInput;
@@ -21,7 +21,7 @@ public class IterativeUpdatePipeline extends Pipeline {
     PointCloud pointCloud;
 
     @Autowired
-    IterativeContract iterativeContract;
+    IterativeContraction iterativeContraction;
 
 
     @Autowired
@@ -43,7 +43,7 @@ public class IterativeUpdatePipeline extends Pipeline {
     @Override
     protected void makeSteps() {
         steps.add(downsample1);
-        steps.add(iterativeContract);
+        steps.add(iterativeContraction);
 //        steps.add(pointRedis);
         steps.add(bsc);
     }

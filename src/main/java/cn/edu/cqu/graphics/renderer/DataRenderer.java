@@ -17,6 +17,7 @@ import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Sphere;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.media.j3d.*;
 import javax.vecmath.Point3d;
@@ -571,20 +572,11 @@ public class DataRenderer {
         bg.addChild(edgeShape(list));
     }
 
-    //// TODO: 2018/7/22 逻辑待修补
     private void renderLevelSet(LevelSet levelSet,
                                 HashMap<Long, HashMap<Long, Double>> map,
                                 HashMap<Long, Vertex> index2Vertex,
                                 BranchGroup bg) {
-//        List<Point3d> list = new ArrayList<>();
-//        for (Long outterIndex : map.keySet()) {
-//            HashMap<Long, Double> innerMap = map.get(outterIndex);
-//            for (Long innerKey : innerMap.keySet()) {
-//                list.add(index2Vertex.get(outterIndex).getPosition());
-//                list.add(index2Vertex.get(innerKey).getPosition());
-//            }
-//        }
-//        bg.addChild(edgeShape(list));
+        throw new NotImplementedException();
     }
 
     private void renderGeodesicGraph(HashMap<Long, Vector<Long>> paths,

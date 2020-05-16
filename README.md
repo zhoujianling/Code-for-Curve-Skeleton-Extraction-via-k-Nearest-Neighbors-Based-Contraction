@@ -6,6 +6,7 @@ Dev Environment:
 - Java 8
 - Maven 
 
+
 Run:
 ```bash
 mvn clean compile assembly:single 
@@ -17,7 +18,10 @@ If everything goes well, you will see:
 ![](https://jimmie00x0000.github.io/img/MPP-Snapshot.png)
 
 
-Click `...` button to import point cloud, then click `Run` button to start the skeletonization process. 
+Click `...` button to import point cloud(ply format is ok), then click `Run` button to start the skeletonization process. 
+
+We use Java3d to visualize the point clouds and the skeletons. Because Java3d has been unmaintained for a long time, this 
+program may not work on some operating systems.
 
 ## About
 If this project contributes to an academic publication, cite it as:

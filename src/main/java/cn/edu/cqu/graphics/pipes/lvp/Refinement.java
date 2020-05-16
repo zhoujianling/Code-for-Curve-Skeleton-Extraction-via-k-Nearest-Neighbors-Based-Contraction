@@ -23,7 +23,6 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static cn.edu.cqu.graphics.Constants.INFINITE;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -607,7 +606,7 @@ public class Refinement extends CachedPipe {
     public Point3d guessNewClusterCenter(TreeSkeletonNode cluster, TreeSkeletonNode branchNode) {
         Point3d result = new Point3d();
         if (branchNode.getChildren().size() != 1) {
-            double knownShortestDistance = INFINITE;
+            double knownShortestDistance = Double.MAX_VALUE;
             for (Long vertexIndex : cluster.getVertices()) {
                 Vertex vertex = obtainVertex(vertexIndex);
                 double tempDis = obtainBranchDistanceSum(vertex.getPosition(), branchNode);

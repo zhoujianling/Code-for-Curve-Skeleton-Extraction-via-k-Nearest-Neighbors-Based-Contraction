@@ -3,20 +3,11 @@ package cn.edu.cqu.graphics;
 /**
  * Created by zjl on 2017/7/7.
  *
- * //// TODO: 2018/7/22  是否可以写一个注解处理器自动生成UNIQUE的type？
  */
 public class Constants {
-    public static final Double INFINITE = 100000.0;
 
     // normal
-//    public static final Double CURVE_RATIO = 4.8;
-    // 怪兽 要粗一些  6.8
-    // 黄桷，要细一些 0.6
     public static final Double CURVE_RATIO = 0.6;
-    // 猪
-//    public static final Double CURVE_RATIO = 2.8;
-//    public static final Double CURVE_RATIO = 1.5;
-//
 
     public static final String SHOW_DATA_TYPE_CUSTOM = "CUSTOM"; // rootVertices() Bean
     public static final String SHOW_DATA_TYPE_FISSION = "FISSION";

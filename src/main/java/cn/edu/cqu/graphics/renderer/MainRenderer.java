@@ -86,7 +86,7 @@ public class MainRenderer {
 
 //        root = skeletons.getTrunkRootClusterNode();
 
-        model.addCanvasObject(new CanvasObject("测试球", Constants.TYPE_TEST_1, null, MemCachePool.NO_CONFIG));
+        model.addCanvasObject(new CanvasObject("Test Sphere", Constants.TYPE_TEST_1, null, MemCachePool.NO_CONFIG));
         mainBranch.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
         mainBranch.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
         mainBranch.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);

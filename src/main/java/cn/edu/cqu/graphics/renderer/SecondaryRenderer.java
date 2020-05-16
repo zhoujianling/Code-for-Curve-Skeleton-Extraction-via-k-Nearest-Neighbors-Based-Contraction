@@ -23,7 +23,6 @@ import javax.vecmath.Point3d;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static cn.edu.cqu.graphics.Constants.INFINITE;
 
 /**
  * 焦点追踪？
@@ -90,7 +89,7 @@ public class SecondaryRenderer {
         for (int i = entries.size() / 10 * 9; i < entries.size() / 10 * 10; i ++) {
             Long vertexIndex = entries.get(i).getKey();
             Vertex vertex = index2Vertex.get(vertexIndex);
-            if (!entries.get(i).getValue().equals(INFINITE)) {
+            if (!entries.get(i).getValue().equals(Double.MAX_VALUE)) {
                 bg.addChild(vertex.pointsShape(5.0f, 0, 0, 1));
             }
         }

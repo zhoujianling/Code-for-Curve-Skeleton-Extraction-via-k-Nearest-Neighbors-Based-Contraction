@@ -40,9 +40,9 @@ public class ExperimentPlatform implements DataImporter, Observer{
 
     private void initPipeline() {
         WLOPDemoPipeline wlop = SpringContext.instance().getBean(WLOPDemoPipeline.class);
-        IterativeUpdatePipeline cosinePipeline = SpringContext.instance().getBean(IterativeUpdatePipeline.class);
+        IterativeUpdatePipeline knnPipeline = SpringContext.instance().getBean(IterativeUpdatePipeline.class);
+        pipelineList.add(knnPipeline);
         pipelineList.add(wlop);
-        pipelineList.add(cosinePipeline);
 
         for (Pipeline p : pipelineList) {
             p.init();
@@ -92,10 +92,6 @@ public class ExperimentPlatform implements DataImporter, Observer{
         return getCurrentPipeline().getModel();
     }
 
-    /**
-     * 往pipeline中导入数据
-     * 前端指定文件、数据类型(点云、骨架还是mesh?)和数据格式(什么格式的点云？ply,energy?)即可
-     */
     @Override
     public void loadData(File file, int type, int format) {
         loader.loadData(file, type, new OnLoadDataListener() {

@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static cn.edu.cqu.graphics.Constants.INFINITE;
 
 @Component
 public class InitialSkeleton extends CachedPipe {
@@ -103,7 +102,7 @@ public class InitialSkeleton extends CachedPipe {
 
         for (int i = 0; i < index2Vertex.size(); i++) {//遍历所有结点，逐个取出加入到S集
             Vertex shortestOutsideS = null; //将 V - S 中离root点最近的点加入到 S 集中，这个距离会一直维护的
-            double shortestDistance = INFINITE;
+            double shortestDistance = Double.MAX_VALUE;
             for (Long vertexIndex : index2Vertex.keySet()) {
                 Vertex vertex = index2Vertex.get(vertexIndex);
                 if (!sSet.contains(vertexIndex) && distances.get(vertexIndex) < shortestDistance) {
@@ -141,7 +140,7 @@ public class InitialSkeleton extends CachedPipe {
 
         List<Long> tobeDeletedIndex = new ArrayList<>();
         for (Long index : distances.keySet()) {
-            if (Math.abs(distances.get(index) - INFINITE) < 1e-5) {
+            if (Math.abs(distances.get(index) - Double.MAX_VALUE) < 1e-5) {
                 tobeDeletedIndex.add(index);
             }
         }
@@ -165,7 +164,7 @@ public class InitialSkeleton extends CachedPipe {
             if (!Objects.equals(vertex.getIndex(), root.getIndex()))
                 initPath.add(vertex.getIndex());
             if (Math.abs(weight(root.getIndex(), vertex.getIndex()) -
-                    INFINITE) > 1e-5)
+                    Double.MAX_VALUE) > 1e-5)
                 paths.put(vertex.getIndex(), initPath);
             else
                 paths.put(vertex.getIndex(), new Vector<>());
@@ -182,7 +181,7 @@ public class InitialSkeleton extends CachedPipe {
         ArrayList<Double> distanceList = new ArrayList<>(distances.values());
         Collections.sort(distanceList);
         for (int i = 0; i < distanceList.size(); i ++) {
-            if (Math.abs(distanceList.get(i) - INFINITE) < 1e-5) {
+            if (Math.abs(distanceList.get(i) - Double.MAX_VALUE) < 1e-5) {
             } else {
                 maxDistance = distanceList.get(i);
             }
@@ -191,7 +190,7 @@ public class InitialSkeleton extends CachedPipe {
 
         for (Map.Entry entry : distances.entrySet()) {
             double distance = (double) entry.getValue();
-            if (Math.abs(distance - INFINITE) < 1e-5) {
+            if (Math.abs(distance - Double.MAX_VALUE) < 1e-5) {
                 System.out.println("neglected.");
                 continue;
             }
@@ -346,7 +345,7 @@ public class InitialSkeleton extends CachedPipe {
     private Double weight(Long index1, Long index2) {
         if (index1.equals(index2)) {return 0.0;}
         HashMap<Long, Double> map = neighborMap.get(index1);
-        return map.getOrDefault(index2, INFINITE);
+        return map.getOrDefault(index2, Double.MAX_VALUE);
     }
 
 

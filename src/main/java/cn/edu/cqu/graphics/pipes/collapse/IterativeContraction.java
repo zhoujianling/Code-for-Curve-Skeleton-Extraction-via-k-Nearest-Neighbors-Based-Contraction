@@ -3,7 +3,6 @@ package cn.edu.cqu.graphics.pipes.collapse;
 import cn.edu.cqu.graphics.Constants;
 import cn.edu.cqu.graphics.alg.GridVoxelizer;
 import cn.edu.cqu.graphics.alg.GridVoxelizerPcaHelper;
-import cn.edu.cqu.graphics.math.EigenvalueCalculator;
 import cn.edu.cqu.graphics.math.Optimizer;
 import cn.edu.cqu.graphics.platform.CanvasObject;
 import cn.edu.cqu.graphics.platform.ExperimentPlatform;
@@ -18,15 +17,12 @@ import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.optim.SimpleValueChecker;
-import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -37,7 +33,7 @@ import static java.lang.Math.*;
  */
 @SuppressWarnings("Duplicates")
 @Component
-public class IterativeContract extends CachedPipe {
+public class IterativeContraction extends CachedPipe {
 
 
     @Autowired
@@ -45,7 +41,6 @@ public class IterativeContract extends CachedPipe {
 
     @PipeInput
     @FromPreviousOutput(name = "Down-Sampled Points")
-//    public HashMap<Long, Vertex> index2Vertex = new HashMap<>();//格子index到格子的映射
     private List<Point3d> dataPoints;
 
     @PipeOutput(type = TYPE_COLLAPSED_POINTS_2, name = "Skeletal Points", visualize = true)
@@ -81,7 +76,7 @@ public class IterativeContract extends CachedPipe {
     private Integer iterationNum = 12;
 
     @Param(comment = "Threshold(η‰)", key = "stopSigma", minVal = 900, maxVal = 999)
-    private Integer stopThreshold = 995;
+    private Integer stopThreshold = 990;
 
     @Param(comment = "Initial R_0", key = "initRadius", minVal = 1, maxVal = 100)
     private Integer initRadius = 10;
@@ -118,15 +113,14 @@ public class IterativeContract extends CachedPipe {
 
     private static double MERGE_THRESHOLD = 1E-3;
 
-    private NonLinearConjugateGradientOptimizer op2 = new NonLinearConjugateGradientOptimizer(NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE,
-            new SimpleValueChecker(1 * 1e-10, 1 * 1e-10));
-
-    // 用于搜索黎曼邻居
+    /**
+     * used for searching approximate geodesic neighbors
+     */
     @Temp
     private Graph fiveNN = null;
 
-    @Autowired
-    private EigenvalueCalculator calculator;
+//    @Autowired
+//    private EigenvalueCalculator calculator;
 
     private double[] paramArray = new double[10];
 
@@ -145,20 +139,19 @@ public class IterativeContract extends CachedPipe {
         ifFrozen.clear();
         sigmas.clear();
         densities.clear();
-        mainIterationBody();
+        performContraction();
     }
 
     private int statFrozenCnt() {
         int cnt = 0;
-        for (int i = 0; i < ifFrozen.size(); i ++) {
-            if (ifFrozen.get(i)) cnt += 1;
+        for (boolean b : ifFrozen) {
+            if (b) cnt += 1;
         }
         return cnt;
     }
 
     /**
-     * 返回 moving 点中的平均 radius, 最大 radius，最小 radius，initialAverageDistance 作为参考。
-     * @return
+     * compute the mean radius, max radius, min radius, etc
      */
     private void statParamInfo(List<List<Integer>> dynamicIndices) {
         // max K
@@ -223,8 +216,6 @@ public class IterativeContract extends CachedPipe {
     }
 
     /**
-     * 应该在每次计算 K 邻居后重新计算密度？
-     * @param shifting
      */
     private void computeDensities(List<Point3d> shifting, List<List<Integer>> dynamicIndices) {
         minDensity = 0.9999999;
@@ -250,12 +241,13 @@ public class IterativeContract extends CachedPipe {
 
     /**
      * 判断是不是已经收缩到线了
-     * @param shifting
+     * check if sigma_i is larger than specified threshold
+     * @param contractingPoints
      */
     @SuppressWarnings("Duplicates")
-    private void computeStatus(List<Point3d> shifting, List<List<Integer>> dynamicIndices) {
-        for (int i = 0; i < shifting.size(); i ++) {
-            if (!VectorUtil.validPoint(shifting.get(i))) {
+    private void computeStatus(List<Point3d> contractingPoints, List<List<Integer>> dynamicIndices) {
+        for (int i = 0; i < contractingPoints.size(); i ++) {
+            if (!VectorUtil.validPoint(contractingPoints.get(i))) {
                 ifFrozen.set(i, true);
             } else {
                 double weightedSigma = sigmas.get(i);
@@ -269,15 +261,20 @@ public class IterativeContract extends CachedPipe {
         }
     }
 
-    private void computeSigma(List<Point3d> shifting, List<List<Integer>> dynamicIndices) {
+    /**
+     * Compute the linearity measurement (sigma_i) of all contracting points
+     * @param contractingPoints the contracting points
+     * @param dynamicIndices the k-nearest-neighbors indices
+     */
+    private void computeSigma(List<Point3d> contractingPoints, List<List<Integer>> dynamicIndices) {
         Octree octree = new Octree();
-        octree.buildIndex(shifting);
+        octree.buildIndex(contractingPoints);
 //        GridVoxelizerPcaHelper helper = new GridVoxelizerPcaHelper();
 //        helper.voxelize(shifting, initialRadius / 30.0);
 
         List<List<Integer>> tempNN = new ArrayList<>();
-        for (int i = 0; i < shifting.size(); i ++) {
-            if (! VectorUtil.validPoint(shifting.get(i))) {
+        for (int i = 0; i < contractingPoints.size(); i ++) {
+            if (! VectorUtil.validPoint(contractingPoints.get(i))) {
                 tempNN.add(new ArrayList<>());
                 continue;
             }
@@ -289,7 +286,7 @@ public class IterativeContract extends CachedPipe {
             List<Integer> neighborIndices = octree.searchAllNeighborsWithinDistance(i, initialAverageDistance * 3);
             tempNN.add(neighborIndices);
 //            List<Point3d> ps = voxelizePoints(shifting, neighborIndices, helper);
-            Point3d xi = shifting.get(i);
+            Point3d xi = contractingPoints.get(i);
             //create points in a double array
             double[][] covMatrixData = new double[][]{
                     new double[]{0, 0, 0},
@@ -299,7 +296,7 @@ public class IterativeContract extends CachedPipe {
 
             for (int index : neighborIndices) {
 //            for (Point3d xj : ps) {
-                Point3d xj = shifting.get(index);
+                Point3d xj = contractingPoints.get(index);
                 Vector3d xixj = new Vector3d(xj.x - xi.x, xj.y - xi.y, xj.z - xi.z);
                 covMatrixData[0][0] += xixj.x * xixj.x;
                 covMatrixData[0][1] += xixj.x * xixj.y;
@@ -336,18 +333,18 @@ public class IterativeContract extends CachedPipe {
 //                okay.set(i, false);
             }
         }
-        // 计算高斯sigma
+        // compute Gaussian-weighted sigma
         minSigma = 0.99999999;
-        for (int i = 0; i < shifting.size(); i ++) {
-            if (!VectorUtil.validPoint(shifting.get(i))) { continue; }
-            Point3d point = shifting.get(i);
+        for (int i = 0; i < contractingPoints.size(); i ++) {
+            if (!VectorUtil.validPoint(contractingPoints.get(i))) { continue; }
+            Point3d point = contractingPoints.get(i);
             double sigmaSum = sigmas.get(i);
             double weightSum = 1.0;
             double i4Radius = 16.0 / initialRadius / initialRadius;
 
             for (int index : tempNN.get(i)) {
                 double sigmaI = sigmas.get(index);
-                Point3d neighborPoint = shifting.get(index);
+                Point3d neighborPoint = contractingPoints.get(index);
                 if (Double.isNaN(neighborPoint.x)) continue;
                 double distance = neighborPoint.distance(point);
                 distance = max(1E-6, distance);
@@ -367,7 +364,7 @@ public class IterativeContract extends CachedPipe {
     }
 
     /**
-     *
+     * update the neighbor number k_i^h
      */
     private void updateKs(List<Boolean> ifFrozen, List<Point3d> shifting, Octree octree, int iter, List<List<Integer>> dynamicNNIndices) {
 //        List<Point3d> activePoints = new ArrayList<>();
@@ -443,8 +440,8 @@ public class IterativeContract extends CachedPipe {
 
 
     /**
-     * 构建五邻居图
-     * @param octree 一个已经对采样点构建索引的八叉树
+     * build a five-nearest-neighbors over the input point cloud
+     * @param octree an octree that has built spacial index over the input point cloud
      */
     private void buildFiveNNGraph(Octree octree) {
         List<int[]> knnIndices = new ArrayList<>();
@@ -504,10 +501,10 @@ public class IterativeContract extends CachedPipe {
     }
 
     private void resampleGrid(List<Point3d> shifting) {
-        // 先找出 需要下采样 的点
+        // find all points that need to be downsampled
         List<Point3d> needDownSample = new ArrayList<>();
         List<Integer> sampleIndices = new ArrayList<>();
-        // 记录每个点的原始index
+        // record the indices of every point
         for (int i = 0; i < shifting.size(); i ++) {
             Point3d p = shifting.get(i);
             if (sigmas.get(i) > 0.9 && sigmas.get(i) < 0.99) {
@@ -568,7 +565,6 @@ public class IterativeContract extends CachedPipe {
         Octree samplesOctree = new Octree();
         samplesOctree.buildIndex(dataPoints);
 
-        // 求初始 averageDistance
         buildFiveNNGraph(samplesOctree);
 
         initialAverageDistance = averageDistance;
@@ -599,7 +595,7 @@ public class IterativeContract extends CachedPipe {
 
     }
 
-    private void mainIterationBody() {
+    private void performContraction() {
         List<Point3d> shifting = new ArrayList<>();
         List<List<Integer>> dynamicNNIndices = new ArrayList<>();
 
@@ -620,7 +616,7 @@ public class IterativeContract extends CachedPipe {
         double threshold = stopThreshold * 1.0 / 1000;
         while (averageSigma < threshold) {
             if (iter > 90) {
-//                logger.info("迭代超过90次，自动跳出Loop，防止无法停机。");
+                logger.info("Auto break the loop if iteration number is larger than 90");
                 break;
             }
 
@@ -636,12 +632,11 @@ public class IterativeContract extends CachedPipe {
                     continue;
                 }
                 Vector3d dynamicXixjSum = new Vector3d();
-                // 遍历邻居
+                // visit all neighbors
                 double moveVectorCnt = 0;
                 for (int index : dynamicNNIndices.get(i)) {
                     Point3d xj = shifting.get(index);
                     Vector3d xixj = new Vector3d(xj.x - xi.x, xj.y - xi.y, xj.z - xi.z);
-//                    if (averageSigma > 0.98 && (ifFrozen.get(index))) xixj.scale(0.02);
                     moveVectorCnt += 1.;
                     dynamicXixjSum.add(xixj);
                 }
@@ -649,7 +644,7 @@ public class IterativeContract extends CachedPipe {
                 Vector3d delta = new Vector3d();
                 dynamicXixjSum.scale(1.0 / moveVectorCnt);
 
-                delta.add(dynamicXixjSum); // 收缩
+                delta.add(dynamicXixjSum); // contraction term
                 if (iter > 0) {
                     Vector3d pcaDirection = pcaDirections.get(i);
                     double angle = delta.angle(pcaDirection);
@@ -696,18 +691,18 @@ public class IterativeContract extends CachedPipe {
             }
 
             if (needResample) { // % 4 == 0
-//                if (iter % 6 == 0)
                 System.gc();
 //                merge(shifting, dynamicNNIndices);
-                // 如果开启 GridResample, 必须避免之前判断 frozen，并把 frozen 操作转移到下面
+                // ---------
 //                resampleGrid(shifting);
 //                computeSigma(shifting, dynamicNNIndices);
 //                computeStatus(shifting, dynamicNNIndices);
 //                resampleKnn(shifting);
+                // ---------
 
                 Octree octree = new Octree();
                 octree.buildIndex(shifting);
-                // 扩大半径
+                // for each point, update the neighbor numbers
                 updateKs(ifFrozen, shifting, octree, iter, dynamicNNIndices);
                 for (int i = 0; i <shifting.size(); i ++) {
                     dynamicNNIndices.get(i).clear();
@@ -724,11 +719,11 @@ public class IterativeContract extends CachedPipe {
 //                computeDensities(shifting, dynamicNNIndices);
             }
 
-            try {
-                Thread.sleep(16L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(16L);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             frozenCount = statFrozenCnt();
             pipeline.getModel().updateCanvasObject(shifting);
@@ -740,7 +735,6 @@ public class IterativeContract extends CachedPipe {
         }
         pipeline.getModel().removeCanvasObject(object);
         points.addAll(shifting);
-//        System.out.println("bridge points size: " + points2.size());
     }
 
 
