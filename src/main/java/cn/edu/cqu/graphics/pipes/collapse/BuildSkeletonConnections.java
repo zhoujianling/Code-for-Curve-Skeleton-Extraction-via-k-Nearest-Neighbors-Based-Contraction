@@ -7,6 +7,8 @@ import cn.edu.cqu.graphics.math.energy.L1Median;
 import cn.edu.cqu.graphics.model.PointCloud;
 import cn.edu.cqu.graphics.model.common.OsculatingPlane;
 import cn.edu.cqu.graphics.platform.CanvasObject;
+import cn.edu.cqu.graphics.platform.DataExporter;
+import cn.edu.cqu.graphics.platform.PlatformGlobalManager;
 import cn.edu.cqu.graphics.protocol.*;
 import cn.jimmiez.pcu.common.graph.Graphs;
 import cn.jimmiez.pcu.common.graphics.BoundingBox;
@@ -20,7 +22,9 @@ import org.springframework.stereotype.Component;
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -44,10 +48,6 @@ public class BuildSkeletonConnections extends CachedPipe {
     @PipeInput
     @FromPreviousOutput(name = "Skeletal Points")
     private List<Point3d> collapsedPoints;
-//
-//    @PipeInput
-//    @FromPreviousOutput(name = "Bridge-Points")
-//    private List<Point3d> bridgePoints;
 
     @PipeInput
     @FromPreviousOutput(name = "SIGMA")
@@ -62,6 +62,7 @@ public class BuildSkeletonConnections extends CachedPipe {
 
     @PipeOutput(name = "Curve Skeleton-2", type = Constants.TYPE_COMMON_SKELETON_CURVE, visualize = true, visible = false)
     private Skeleton optimizedSkeleton = new Skeleton();
+
 
     @Temp
     private List<SkeletonBranch> branches = new ArrayList<>();
@@ -91,6 +92,9 @@ public class BuildSkeletonConnections extends CachedPipe {
     @Autowired
     private Logger logger;
 
+    @Autowired
+    private DataExporter exporter;
+
     private Octree collapsedOctree = new Octree();
 
     private Octree sampleOctree = new Octree();
@@ -108,6 +112,9 @@ public class BuildSkeletonConnections extends CachedPipe {
     /** 搜索下一个 骨架点 所允许的最低的置信度, **/
     @Param(comment = "Node-Conf-Threshold", key = "spConnConfThres", minVal = 1, maxVal = 10)
     private Integer spConnectionConfidenceThreshold = 6;
+
+    @Param(comment = "Export Skeleton", key = "exportSkeleton")
+    private Boolean exportSkeleton = false;
 
     /** 插值的松紧程度，大于0则紧，小于0则松 **/
     private static final Double CARDINAL_TENSION = 0.5;
@@ -898,27 +905,36 @@ public class BuildSkeletonConnections extends CachedPipe {
         recenterBranches(branches);
         connectBranches();
 
-        // 后处理过程
+        // post-processing [?]
         repairBranches();
-//        filterBranches();
+        exportResultingSkeleton();
+    }
 
+    private void exportResultingSkeleton() {
+        if (! exportSkeleton) return;
 
-        // 重分布的拟策略：间距过小则合并，间距过大则Cardinal插值
-        // 当遭遇分叉点的时候，观察哪边的夹角更小,方便选择p4
-//        redistribute();
+        logger.info("============== Export Skeleton ================");
 
-
-        // 仍然执行 Cardinal 插值，但是是在几个分支的连线之间执行的。
-//        CardinalInterpolator interpolator = new CardinalInterpolator(2);
-//        interpolator.interpolate(skeleton);
+        String filePath = PlatformGlobalManager.appDir()
+                + File.separator
+                + "Skeleton-"
+                + System.currentTimeMillis()
+                + "-Raw.obj";
+        try {
+            exporter.exportSkeletonOBJ(skeleton, filePath);
+//            exporter.exportSkeletonOBJ(optimizedSkeleton, filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logger.info("============== Export Skeleton ================");
     }
 
     /**
-     * 执行对优化后骨架的最终清理，删除 outlier
+     * clean outliers
      */
     private void filterBranches() {
         if (optimizedSkeleton.vertices().size() < 1) {
-            logger.info("没有要清理的骨架，跳过。");
+            logger.info("no outliers");
             return;
         }
         List<List<Integer>> branches = Graphs.connectedComponents(optimizedSkeleton);
@@ -937,14 +953,14 @@ public class BuildSkeletonConnections extends CachedPipe {
     }
 
     /**
-     * 执行对初始骨架断开处的强力修复
+     * connect dis-connected skeleton branches
      */
     private void repairBranches() {
         if (skeleton.vertices().size() < 1) {
-            logger.info("没有要修复的骨架，跳过。");
+            logger.info("no available vertices");
             return;
         }
-        // 复制初始骨架
+        // copy initial skeleton graph
         for (Integer vi : skeleton.vertices()) {
             optimizedSkeleton.addVertex(vi, skeleton.getVertex(vi));
         }
@@ -954,7 +970,7 @@ public class BuildSkeletonConnections extends CachedPipe {
                 optimizedSkeleton.addEdge(vi, vj, distance);
             }
         }
-        // 找出骨架主体
+        // find the main skeleton branch
         List<List<Integer>> branches = Graphs.connectedComponents(optimizedSkeleton);
         List<Integer> mainBranch = branches.get(0);
         for (List<Integer> branch : branches) {
@@ -991,14 +1007,13 @@ public class BuildSkeletonConnections extends CachedPipe {
         });
         for (List<Integer> branch : branches) {
             if (mainBranch == branch) continue;
-            // 执行修复过程
             repairBranch(branch, mainBranch);
         }
     }
 
     private class SkeletonPoint {
 
-        /** 骨架点坐标 **/
+        /** position of skeleton point **/
         Point3d point = null;
 
         /** 骨架线的切线方向 **/

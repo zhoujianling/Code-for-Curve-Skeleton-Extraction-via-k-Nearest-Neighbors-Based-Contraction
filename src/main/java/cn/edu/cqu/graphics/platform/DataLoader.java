@@ -149,13 +149,13 @@ public class DataLoader {
                 data = loadObjPointCloud(file);
                 break;
             default:
-                throw new UnsupportedOperationException("未支持的数据格式");
+                throw new UnsupportedOperationException("unsupported file type");
         }
         if (data != null) {
             computeMd5(data, file);
             listener.onLoadData(data);
         } else {
-            logger.warning("无法加载点云数据。");
+            logger.warning("fail to load point cloud data");
             listener.onError("Cannot load data.");
         }
 

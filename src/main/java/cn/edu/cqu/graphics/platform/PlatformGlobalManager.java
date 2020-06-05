@@ -111,7 +111,7 @@ public class PlatformGlobalManager {
         detectDirectory(platformDir(), "platform");
     }
 
-    private static String appDir() {
+    public static String appDir() {
         return System.getProperty("user.home")
                 + File.separator
                 + APP_ROOT_DIR;
