@@ -17,8 +17,7 @@ java -jar .\mpp-1.0-SNAPSHOT-jar-with-dependencies.jar
 If everything goes well, you will see:
 ![](https://jimmie00x0000.github.io/img/MPP-Snapshot.png)
 
-Contraction process of a tree point cloud:
-![](https://jimmie00x0000.github.io/anim/KNNContraction.gif)
+ 
 
 
 Click `...` button to import point cloud(ply format is ok), then click `Run` button to start the skeletonization process. 
