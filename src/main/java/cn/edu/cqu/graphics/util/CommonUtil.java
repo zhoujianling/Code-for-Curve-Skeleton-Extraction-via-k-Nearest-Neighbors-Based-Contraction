@@ -5,6 +5,7 @@ import cn.edu.cqu.graphics.model.TreeSkeleton;
 import javax.vecmath.Point3d;
 
 public class CommonUtil {
+
     /**
      * 拷贝一份骨架线
      * @param src 源骨架线

@@ -62,7 +62,7 @@
               <grid row="2" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="数据格式"/>
+              <text value="Data Format"/>
             </properties>
           </component>
           <component id="b62b2" class="javax.swing.JComboBox" binding="typeCombox">
@@ -76,7 +76,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="数据类型"/>
+              <text value="Data Type"/>
             </properties>
           </component>
           <component id="b183f" class="javax.swing.JComboBox" binding="formatCombox">
@@ -90,7 +90,7 @@
               <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="选择文件"/>
+              <text value="Select File"/>
             </properties>
           </component>
           <component id="a0fff" class="javax.swing.JTextField" binding="filePathText">

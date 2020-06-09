@@ -66,13 +66,13 @@ public class SelectDataDialog extends JDialog {
     private void initData() {
         ArrayList<DataFormatItem> pointCloudFormats = new ArrayList<>();
         ArrayList<DataFormatItem> skeletonFormats = new ArrayList<>();
-        pointCloudFormats.add(new DataFormatItem(Constants.FORMAT_POINT_CLOUD_LIUJI, "刘氏点云"));
-        pointCloudFormats.add(new DataFormatItem(Constants.FORMAT_POINT_CLOUD_PLY, "ply格式"));
-        pointCloudFormats.add(new DataFormatItem(Constants.FORMAT_POINT_CLOUD_ROSA_OFF, "off格式"));
-        skeletonFormats.add(new DataFormatItem(Constants.FORMAT_SKELETON_ZJL, "简单骨架"));
-        skeletonFormats.add(new DataFormatItem(Constants.FORMAT_SKELETON_L1_MEDIAN, "L1-median骨架"));
-        map.put(new DataTypeItem(Constants.TYPE_POINT_CLOUD, "点云"), pointCloudFormats);
-        map.put(new DataTypeItem(Constants.TYPE_COMMON_SKELETON_CURVE, "骨架"), skeletonFormats);
+        pointCloudFormats.add(new DataFormatItem(Constants.FORMAT_POINT_CLOUD_LIUJI, "xyz(pts)"));
+        pointCloudFormats.add(new DataFormatItem(Constants.FORMAT_POINT_CLOUD_PLY, "ply"));
+        pointCloudFormats.add(new DataFormatItem(Constants.FORMAT_POINT_CLOUD_ROSA_OFF, "off"));
+        skeletonFormats.add(new DataFormatItem(Constants.FORMAT_SKELETON_ZJL, "Simple"));
+        skeletonFormats.add(new DataFormatItem(Constants.FORMAT_SKELETON_L1_MEDIAN, "L1-median"));
+        map.put(new DataTypeItem(Constants.TYPE_POINT_CLOUD, "Point Cloud"), pointCloudFormats);
+        map.put(new DataTypeItem(Constants.TYPE_COMMON_SKELETON_CURVE, "Skeleton"), skeletonFormats);
     }
 
     private void initComponent() {
@@ -179,17 +179,17 @@ public class SelectDataDialog extends JDialog {
         panel3.setLayout(new GridLayoutManager(5, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
-        label1.setText("数据格式");
+        label1.setText("Data Format");
         panel3.add(label1, new GridConstraints(2, 0, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         typeCombox = new JComboBox();
         panel3.add(typeCombox, new GridConstraints(0, 1, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText("数据类型");
+        label2.setText("Data Type");
         panel3.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         formatCombox = new JComboBox();
         panel3.add(formatCombox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         selectFileButton = new JButton();
-        selectFileButton.setText("选择文件");
+        selectFileButton.setText("Select File");
         panel3.add(selectFileButton, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         filePathText = new JTextField();
         panel3.add(filePathText, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
