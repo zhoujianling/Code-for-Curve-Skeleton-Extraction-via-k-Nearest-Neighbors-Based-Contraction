@@ -15,7 +15,7 @@ java -jar .\mpp-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 If everything goes well, you will see:
-![](https://jimmie00x0000.github.io/img/MPP-Snapshot.png)
+![](https://zhoujianling.github.io/img/MPP-Snapshot.png)
 
  
 
